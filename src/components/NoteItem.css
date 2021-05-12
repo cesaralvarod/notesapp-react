@@ -1,0 +1,17 @@
+li.note {
+  color: #707070;
+  padding: 1.5rem;
+  border-radius: 0.8rem;
+}
+
+@media (min-width: 480px) {
+  li.note {
+    width: calc(50% - 1rem);
+  }
+}
+
+@media (min-width: 560px) {
+  li.note {
+    width: calc(33% - 1rem);
+  }
+}

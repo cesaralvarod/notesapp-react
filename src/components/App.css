@@ -1,0 +1,68 @@
+.container {
+  max-width: 120rem;
+  width: 95%;
+  margin: 0 auto;
+}
+
+.section {
+  margin-top: 3rem;
+}
+
+input[type="text"],
+textarea {
+  background: none;
+  border: none;
+  background: transparent;
+  border: 2px solid #b08348;
+  border-radius: 0.4rem;
+  padding: 0.5rem 0.8rem;
+  font-family: "Roboto", Arial, Helvetica, sans-serif;
+  font-size: 1.6rem;
+  color: #fff;
+  outline: none;
+}
+
+input[type="text"]::placeholder,
+textarea::placeholder {
+  font-family: "Roboto", Arial, Helvetica, sans-serif;
+}
+
+input[type="text"]:focus {
+  outline: none;
+}
+
+input[type="text"]:focus-within {
+  border: 2px solid #fa9511;
+}
+
+button {
+  border: none;
+  background: none;
+  background: #36bf66;
+  border: 1px solid #36bf66;
+  border-radius: 0.4rem;
+  color: #fff;
+  font-weight: 700;
+  padding: 1rem;
+  font-size: 1.6rem;
+  display: inline-block;
+  cursor: pointer;
+  transition: background 0.2s ease-in-out;
+}
+
+button.button-danger {
+  background: #cc3f35;
+  border: 1px solid #cc3f35;
+}
+
+button.button-success:hover {
+  background: #37e674;
+}
+
+button.button-danger:hover {
+  background: #e3372b;
+}
+
+button.d-block {
+  min-width: 100%;
+}
