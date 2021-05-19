@@ -1,25 +1,28 @@
-import React from "react";
+import React, { useContext } from "react";
 
 // Components
 
 import NoteItem from "./NoteItem";
 
+// Context
+
+import NotesContext from "../helpers/NotesContext";
+
 // Styles
 
 import "./NotesList.css";
 
-function NotesList() {
-  const dataNote = {
-    title: "HOla mundo",
-    content: "sjaksdjaks skjdaks dkajshdka jdisand",
-    color: "#f7e2a8",
-  };
+const NotesList = () => {
+  const { arrNotes } = useContext(NotesContext);
 
-  return (
-    <ul className="notes-list">
-      <NoteItem data={dataNote} />
-    </ul>
-  );
-}
+  const notesRender =
+    arrNotes.data.length > 0
+      ? arrNotes.data.map((note) => {
+          return <NoteItem key={note.id} data={note} />;
+        })
+      : null;
+
+  return <ul className="notes-list">{notesRender}</ul>;
+};
 
 export default NotesList;

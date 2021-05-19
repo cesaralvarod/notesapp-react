@@ -4,7 +4,7 @@ import React, { useRef } from "react";
 
 import "./ColorRadioButtons.css";
 
-const ColorRadioButtons = ({ dataColor, defaultId, dataForm, setDataForm }) => {
+const ColorRadioButtons = ({ dataForm, setDataForm, color }) => {
   const refRadio = useRef(null);
 
   const changeClassLabel = () => {
@@ -21,7 +21,7 @@ const ColorRadioButtons = ({ dataColor, defaultId, dataForm, setDataForm }) => {
 
   const handleChange = () => {
     changeClassLabel();
-    setDataForm({ color: dataColor });
+    setDataForm({ color: color });
   };
 
   return (
@@ -30,19 +30,16 @@ const ColorRadioButtons = ({ dataColor, defaultId, dataForm, setDataForm }) => {
         type="radio"
         name="color"
         ref={refRadio}
-        id={dataColor.id}
-        value={dataColor.hex}
+        id={color.id}
         onChange={handleChange}
-        defaultChecked={defaultId === dataColor.id ? true : false}
+        defaultChecked={color.default}
       />
       <label
-        className={
-          "content-color " + (defaultId === dataColor.id ? "active" : "")
-        }
-        htmlFor={dataColor.id}
+        className={"content-color " + (color.default && "active")}
+        htmlFor={color.id}
       >
         <div className="color">
-          <span className="small" style={{ background: dataColor.hex }}></span>
+          <span className="small" style={{ background: color.hex }}></span>
         </div>
       </label>
     </div>

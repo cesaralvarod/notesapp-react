@@ -2,6 +2,7 @@
   max-width: 120rem;
   width: 95%;
   margin: 0 auto;
+  padding: 3rem 0;
 }
 
 .section {
@@ -35,7 +36,8 @@ input[type="text"]:focus-within {
   border: 2px solid #fa9511;
 }
 
-button {
+button,
+.link-router {
   border: none;
   background: none;
   background: #36bf66;
@@ -50,7 +52,8 @@ button {
   transition: background 0.2s ease-in-out;
 }
 
-button.button-danger {
+button.button-danger,
+.link-router.danger {
   background: #cc3f35;
   border: 1px solid #cc3f35;
 }
@@ -65,4 +68,12 @@ button.button-danger:hover {
 
 button.d-block {
   min-width: 100%;
+}
+
+.link-router {
+  text-decoration: none;
+  display: block;
+  text-transform: uppercase;
+  text-align: center;
+  margin-bottom: 2rem;
 }

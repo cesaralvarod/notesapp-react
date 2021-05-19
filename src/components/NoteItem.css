@@ -1,7 +1,7 @@
 li.note {
   color: #707070;
-  padding: 1.5rem;
   border-radius: 0.8rem;
+  position: relative;
 }
 
 @media (min-width: 480px) {
@@ -14,4 +14,33 @@ li.note {
   li.note {
     width: calc(33% - 1rem);
   }
+}
+
+a.link-edit {
+  cursor: pointer;
+  padding: 2rem;
+  width: 100%;
+  display: block;
+  text-decoration: none;
+  color: #707070;
+}
+
+a.link-edit:visited {
+  color: #707070;
+}
+
+button.btn-delete {
+  background: none;
+  border: none;
+  color: #707070;
+  transition: all 0.3s ease-out;
+  font-size: 3rem;
+  padding: 0;
+  position: absolute;
+  top: -5px;
+  right: 8px;
+}
+
+button.btn-delete:hover {
+  color: #e3372b;
 }
