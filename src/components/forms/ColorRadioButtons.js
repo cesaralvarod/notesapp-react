@@ -1,11 +1,22 @@
-import React, { useRef } from "react";
+import React, { memo, useRef } from "react";
 
-// Styles
+// Style
 
 import "./ColorRadioButtons.css";
 
-const ColorRadioButtons = ({ dataForm, setDataForm, color }) => {
+const ColorRadioButtons = memo(({ setDefaultColor, id, hex, isDefault }) => {
+  // useRef
+
   const refRadio = useRef(null);
+
+  // handles
+
+  const handleChange = () => {
+    changeClassLabel();
+    setDefaultColor(parseInt(refRadio.current.id), hex, true);
+  };
+
+  // functions
 
   const changeClassLabel = () => {
     const anotherLabels =
@@ -19,31 +30,26 @@ const ColorRadioButtons = ({ dataForm, setDataForm, color }) => {
     label.classList.add("active");
   };
 
-  const handleChange = () => {
-    changeClassLabel();
-    setDataForm({ color: color });
-  };
-
   return (
-    <div className="content-input ">
+    <div className="content-input">
       <input
         type="radio"
         name="color"
+        id={id}
+        defaultChecked={isDefault}
         ref={refRadio}
-        id={color.id}
-        onChange={handleChange}
-        defaultChecked={color.default}
+        onClick={handleChange}
       />
       <label
-        className={"content-color " + (color.default && "active")}
-        htmlFor={color.id}
+        className={"content-color " + (isDefault && "active")}
+        htmlFor={id}
       >
         <div className="color">
-          <span className="small" style={{ background: color.hex }}></span>
+          <span className="small" style={{ background: hex }}></span>
         </div>
       </label>
     </div>
   );
-};
+});
 
 export default ColorRadioButtons;

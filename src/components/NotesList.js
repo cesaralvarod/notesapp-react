@@ -13,11 +13,20 @@ import NotesContext from "../helpers/NotesContext";
 import "./NotesList.css";
 
 const NotesList = () => {
+  // useContext
+
   const { arrNotes } = useContext(NotesContext);
 
+  const notes =
+    arrNotes.lastSearch.search !== ""
+      ? arrNotes.lastSearch.data
+      : arrNotes.data;
+
+  // render
+
   const notesRender =
-    arrNotes.data.length > 0
-      ? arrNotes.data.map((note) => {
+    notes.length > 0
+      ? notes.map((note) => {
           return <NoteItem key={note.id} data={note} />;
         })
       : null;

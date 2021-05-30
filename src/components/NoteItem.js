@@ -1,21 +1,30 @@
 import React, { useContext } from "react";
+import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
+
+// Components
+
+import NotesContext from "../helpers/NotesContext";
 
 // Styles
 
 import "./NoteItem.css";
-import { Link } from "react-router-dom";
-import NotesContext from "../helpers/NotesContext";
 
 const NoteItem = ({ data }) => {
+  // variables
+
   let titleRender = cutContent(data.title, 10);
   let contentRender = cutContent(data.content, 30);
   let colorNote = data.color.hex;
 
+  // context
+
   const { dpArrNotes } = useContext(NotesContext);
 
+  // handles
+
   const handleClick = (e) => {
-    dpArrNotes({ type: "delete", payload: data.id });
+    dpArrNotes({ type: "DELETE_NOTE", payload: data.id });
   };
 
   return (

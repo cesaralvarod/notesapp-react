@@ -23,6 +23,7 @@ const App = () => {
     return (
       JSON.parse(localStorage.getItem("notes")) || {
         data: [],
+        lastSearch: { data: [], search: "" },
         defaultColor: 0,
       }
     );

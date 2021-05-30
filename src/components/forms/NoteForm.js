@@ -1,11 +1,18 @@
-import React, { memo, useContext, useEffect, useRef, useState } from "react";
-import { Redirect } from "react-router";
+import React, {
+  useCallback,
+  useContext,
+  memo,
+  useState,
+  useRef,
+  useEffect,
+} from "react";
+import { Redirect, useLocation } from "react-router";
 
 // Components
 
 import ColorRadioButtons from "./ColorRadioButtons";
 
-// Context
+//Context
 
 import NotesContext from "../../helpers/NotesContext";
 
@@ -14,91 +21,118 @@ import NotesContext from "../../helpers/NotesContext";
 import "./NoteForm.css";
 
 const NoteForm = memo(() => {
+  // useLocation
+
+  const { pathname, search } = useLocation();
+
+  // useRef
+
+  const titleInput = useRef(null);
+  const contentTextarea = useRef(null);
+
+  // useContext
+
   const { arrNotes, colorsNotes, dpArrNotes } = useContext(NotesContext);
 
-  const colors =
-    !colorsNotes || colorsNotes.length === 0
-      ? colorsNotes
-      : ["#f7e2a8", "#dbf7a8", "#a8f7df", "#bdd8ff"];
+  // useState
 
-  const [redirect, setRedirect] = useState(false);
-
-  const inputTitle = useRef(null),
-    textareaContent = useRef(null);
-
-  const defaultId = arrNotes.defaultColor;
-
-  const [dataColor, setDataColor] = useState({
-    color: { id: defaultId, hex: colors[defaultId], default: true },
+  const [color, setColor] = useState({
+    id: arrNotes.defaultColor,
+    hex: colorsNotes[arrNotes.defaultColor],
+    isDefault: true,
   });
+  const [redirect, setRedirect] = useState(false);
+  const [noteEdit, setNoteEdit] = useState(null);
+
+  // useEffect
 
   useEffect(() => {
-    inputTitle.current.focus();
+    titleInput.current.focus();
+    if (pathname === "/edit" && search !== "") {
+      const query = new URLSearchParams(search);
+      const id = parseInt(query.get("id"));
+      let noteEdit;
+      arrNotes.data.forEach((note) => {
+        if (id === note.id) {
+          noteEdit = note;
+        }
+      });
+      setNoteEdit(noteEdit);
+      titleInput.current.value = noteEdit.title;
+      contentTextarea.current.innerText = noteEdit.content;
+    }
   }, []);
 
-  useEffect(() => {
-    dpArrNotes({ type: "setDColor", payload: dataColor.color.id });
-  }, [dataColor]);
+  // useCallback
+
+  const cbDefaultColor = useCallback(
+    (id, hex, isDefault) => {
+      dpArrNotes({ type: "SET_DEFAULT_COLOR", payload: id });
+      setColor({ id, hex, isDefault });
+    },
+    [dpArrNotes, setColor]
+  );
+
+  // handles
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    const title = inputTitle.current.value.trim(),
-      content = textareaContent.current.value.trim();
-    if (title !== "" || content !== "") {
-      dpArrNotes({
-        type: "add",
-        payload: {
-          id: Date.now(),
-          title: title,
-          content: content,
-          color: dataColor.color,
-        },
-      });
+    const title = titleInput.current.value.trim();
+    const content = contentTextarea.current.value.trim();
+    if (title.length > 0 || content.length > 0) {
+      if (!noteEdit) {
+        dpArrNotes({
+          type: "ADD_NOTE",
+          payload: { id: Date.now(), title, content, color },
+        });
+      } else {
+        dpArrNotes({
+          type: "EDIT_NOTE",
+          payload: { ...noteEdit, title, content, color },
+        });
+      }
       setRedirect(true);
-      e.target.reset();
     }
   };
 
-  let arrColor;
+  // renderRadioColors
 
-  const colorsRender = colors.map((color, i) => {
-    arrColor = {
-      id: i,
-      hex: color,
-      default: i === defaultId,
-    };
-    return (
-      <ColorRadioButtons
-        key={i}
-        setDataForm={setDataColor}
-        dataForm={dataColor}
-        color={arrColor}
-      />
-    );
-  });
+  const renderRadioColors = colorsNotes.map((color, id) => (
+    <ColorRadioButtons
+      key={id}
+      id={id}
+      hex={color}
+      isDefault={id === arrNotes.defaultColor}
+      setDefaultColor={cbDefaultColor}
+    />
+  ));
 
   return (
     <form onSubmit={handleSubmit}>
-      <div className="select-color">{colorsRender}</div>
+      <div className="select-color">{renderRadioColors}</div>
       <input
         type="text"
         className="form-item"
         placeholder="Title"
         autoComplete="off"
-        ref={inputTitle}
+        ref={titleInput}
       />
       <textarea
         className="form-item"
         placeholder="Add text"
         autoComplete="off"
-        ref={textareaContent}
+        ref={contentTextarea}
       ></textarea>
       <div className="buttons">
-        <button className="button-success">Add</button>
+        {noteEdit ? <ButtonForm text="Edit" /> : <ButtonForm text="Add" />}
         {redirect && <Redirect to="/" />}
       </div>
     </form>
   );
 });
+
+const ButtonForm = ({ text }) => {
+  return <button className="button-success">{text}</button>;
+};
 
 export default NoteForm;
